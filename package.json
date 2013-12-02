@@ -1,0 +1,31 @@
+{
+  "name": "node-image-dedupe",
+  "version": "0.0.1",
+  "description": "NodeJS Image Deduplication",
+  "main": "dedupe.js",
+  "dependencies": {
+    "commander": "~2.1.0",
+    "node-oiio": "~0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/euank/node-image-dedupe.git"
+  },
+  "keywords": [
+    "image",
+    "jpg",
+    "png",
+    "similarity",
+    "dedupe",
+    "deduplication"
+  ],
+  "author": "EuanK",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/euank/node-image-dedupe/issues"
+  }
+}
