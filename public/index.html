@@ -51,7 +51,6 @@ img {
           class="dropzone col-lg-4"
           id="dropzone"></form>
         <div class="col-lg-4 controls">
-          Dupe threshold: <input placeholder="0.0-1.0" type="decimal" ng-model="threshold"></input><br />
           Algorithm: <select ng-options="algo.name for algo in loc.algorithms" ng-model="loc.selectedAlgo"> </select>
           <a ng-click="dedupe()" ng-class="{disabled: loc.selectedImages.length < 2}" class="btn btn-primary">Calculate</a>
         </div>
