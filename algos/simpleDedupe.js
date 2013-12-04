@@ -18,7 +18,11 @@ var Image = require('node-oiio');
  * one.
  */
 
-module.exports = function(lhs, rhs) {
+
+module.exports.default = false;
+module.exports.name = "Dumb diff";
+
+module.exports.dedupe = function(lhs, rhs) {
   if(!(lhs instanceof Image && rhs instanceof Image)) {
     throw new TypeError("Invalid arguments");
   }

@@ -18,7 +18,10 @@ var Image = require('node-oiio');
  * one.
  */
 
-module.exports = function(lhs, rhs) {
+module.exports.default = false;
+module.exports.name = "Scaled diff";
+
+module.exports.dedupe = function(lhs, rhs) {
   var maxW = Math.max(lhs.width, rhs.width);
   var maxH = Math.max(lhs.height, rhs.height);
   var i1 = lhs.scale(maxW, maxH);
