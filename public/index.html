@@ -1,0 +1,93 @@
+<html>
+  <head>
+    <title>Image dedupe</title>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.7.1/css/dropzone.min.css">
+    <style>
+#dropzone {
+  height: 30px;
+  width: 500px;
+}
+#container {
+    text-align: center;
+}
+a, figure {
+}
+figcaption {
+    margin: 10px 0 0 0;
+    font-variant: small-caps;
+    font-family: Arial;
+    font-weight: bold;
+    color: #bb3333;
+}
+figure {
+    padding: 5px;
+}
+
+img.selected {
+  outline-color: green;
+  outline-width: thick;
+  outline-style: solid;
+img:hover {
+    transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+}
+img {
+    transition: transform 0.2s;
+    -webkit-transition: -webkit-transform 0.2s;
+    -moz-transition: -moz-transform 0.2s;
+    -o-transition: -o-transform 0.2s;
+}
+    </style>
+  </head>
+  <body ng-app="App" ng-controller='Ctrl'>
+    {{loc}}
+    <div ng-show="loc.nav == 'UPLOAD'">
+      <h1>Drag and drop an image to upload!</h1>
+      <div class="row">
+        <form action="/api/image" method="POST"
+          class="dropzone col-lg-4"
+          id="dropzone"></form>
+        <div class="col-lg-4 controls">
+          Dupe threshold: <input placeholder="0.0-1.0" type="decimal" ng-model="threshold"></input><br />
+          Algorithm: <select ng-options="algo.name for algo in loc.algorithms" ng-model="loc.selectedAlgo"> </select>
+          <a ng-click="dedupe()" ng-class="{disabled: loc.selectedImages.length < 2}" class="btn btn-primary">Calculate</a>
+        </div>
+      </div>
+
+      <h3>Click images to select them for calculating similarity</h3>
+      <div class="row images">
+        <div ng-repeat="img in loc.imgs">
+          <figure class="col-md-4">
+            <img class="img-responsive img" 
+            ng-class="{selected: loc.selectedImages.indexOf(img.path) >= 0}" 
+            width="300px" height="300px" 
+            ng-click="toggleImage(img.path)"
+            src="{{img.path}}" alt="{{img.name}}"></img>
+            <figcaption>{{img.name}}</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+    <div ng-show="loc.nav == 'DEDUPE'">
+      <a class="btn btn-primary btn-large" ng-click="loc.nav = 'UPLOAD'">Back to Upload</a>
+      <div ng-repeat="dupe in loc.dupes" class="row">
+        <img class="col-md-4 img-responsive img" width="300px" src="{{dupe.src}}"></img>
+        <figure class="col-md-1" ng-repeat="c in dupe.dupes">
+          <img class="img-responsive img" width="100px" src="{{c.path}}"></img>
+          <figcaption>{{c.percent}}</figcaption>
+        </figure>
+      </div>
+
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/3.7.1/dropzone.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
