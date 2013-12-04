@@ -50,17 +50,18 @@ app.get('/algorithms', function(req, res) {
 });
 app.post('/dedupe', function(req, res) {
   var imgsToDedupe = req.body.imgs;
-  console.log(req.body);
   var algo = dedupeAlgorithms.reduce(function(l,r) { return l.name == req.body.algo.name ? l: r.name == req.body.algo.name ? r : l;}).algo;
   var resp = [];
-  console.log(algo);
   if(algo.getBlob) {
     /* "quick" time :S */
     async.map(imgsToDedupe, function(img, cb) {
       client.get("algo:" + algo.name + ":" + img, function(err, val) {
-        cb(val);
+        try {
+          cb(null,JSON.parse(val));
+        } catch(e) { cb(null,null); }
       });
     }, function(err, results) {
+      console.log(err);
       var pairs = [];
       for(var i=0;i<imgsToDedupe.length;i++) {
         pairs.push([]);
@@ -71,17 +72,16 @@ app.post('/dedupe', function(req, res) {
           } else if(results[i] && results[j]) {
           } else if(results[i]) {
             results[j] = algo.getBlob(new Image(imgsToDedupe[j]));
-            client.set("algo:" + algo.name + ":" + imgsToDedupe[j], results[j]);
+            client.set("algo:" + algo.name + ":" + imgsToDedupe[j], JSON.stringify(results[j]));
           } else if(results[j]) {
             results[i] = algo.getBlob(new Image(imgsToDedupe[i]));
-            client.set("algo:" + algo.name + ":" + imgsToDedupe[i], results[i]);
+            client.set("algo:" + algo.name + ":" + imgsToDedupe[i], JSON.stringify(results[i]));
           } else {
             results[i] = algo.getBlob(new Image(imgsToDedupe[i]));
             results[j] = algo.getBlob(new Image(imgsToDedupe[j]));
-            client.set("algo:" + algo.name + ":" + imgsToDedupe[j], results[j]);
-            client.set("algo:" + algo.name + ":" + imgsToDedupe[i], results[i]);
+            client.set("algo:" + algo.name + ":" + imgsToDedupe[j], JSON.stringify(results[j]));
+            client.set("algo:" + algo.name + ":" + imgsToDedupe[i], JSON.stringify(results[i]));
           }
-          console.log(results);
           pairs[i][j] = algo.diffBlobs(results[i], results[j]);
         }
       }
@@ -94,7 +94,6 @@ app.post('/dedupe', function(req, res) {
         }
         ret.push(r);
       }
-      console.log(ret);
       res.send(ret);
     });
 
@@ -116,7 +115,6 @@ app.post('/dedupe', function(req, res) {
       }
       ret.push(r);
     }
-    console.log(ret);
     res.send(ret);
   }
 });
