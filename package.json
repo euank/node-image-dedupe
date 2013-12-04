@@ -5,7 +5,7 @@
   "main": "dedupe.js",
   "dependencies": {
     "commander": "~2.1.0",
-    "node-oiio": "~0.0.1"
+    "node-oiio": "~0.1.0"
   },
   "devDependencies": {},
   "scripts": {

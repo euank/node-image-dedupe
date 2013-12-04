@@ -1,6 +1,8 @@
 var program = require("commander");
 var Image = require("node-oiio");
-var simple = require("./simpleDedupe");
+var simple = require("./algos/simpleDedupe");
+var ssimple = require("./algos/scaledSimpleDedupe");
+var cdedupe = require("./algos/colorDedupe");
 
 var parsed = program
   .usage('[options] <files ...>')
@@ -26,10 +28,11 @@ var dupePairs = [];
 for(var i=0;i<imgs.length;i++) {
   for(var j=i+1;j<imgs.length;j++) {
     dupePairs.push({
-      lhs: i,
-      rhs: j,
-      dupe: simple(imgs[i], imgs[j])
+      lhs: imgs[i].path,
+      rhs: imgs[j].path,
+      dupe: cdedupe(imgs[i], imgs[j])
     });
+    console.log(dupePairs.reduce(function(l,r){return r;}));
   }
 }
 
