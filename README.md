@@ -8,7 +8,7 @@ An example of this running can be found [here](http://dedupe.euank.com).
 Installation
 ------------
 
-Dependeincies: OpenImageIO, redis-server, nodejs, npm
+Dependencies: OpenImageIO, redis-server, nodejs, npm
 
 Example install on ubuntu (modify to taste):
 ```
