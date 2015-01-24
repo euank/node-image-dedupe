@@ -6,8 +6,14 @@ var express = require('express')
   , fs = require('fs')
   , path = require('path')
   , redis = require('redis')
-  , async = require('async')
-  , client = redis.createClient();
+  , async = require('async');
+
+var client;
+if(process.env["REDIS_HOST"]) {
+  client = redis.createClient(6379, process.env["REDIS_HOST"]);
+} else {
+  client = redis.createClient();
+}
 
 var dedupeAlgorithms = [];
 var algoObjs = fs.readdirSync("./algos");
