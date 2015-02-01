@@ -7,4 +7,6 @@ COPY package.json /app/package.json
 RUN npm install
 COPY . /app/
 RUN mkdir imgs
+VOLUME ["/app/public","/app/imgs"]
+
 CMD ["node", "app.js"]

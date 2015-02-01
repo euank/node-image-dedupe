@@ -1,0 +1,16 @@
+nginx:
+  build: ./nginx/
+  volumes_from:
+    - app
+  links:
+    - app
+  ports:
+    - "8095:80"
+app:
+  build: .
+  links:
+    - "redis:redis"
+  environment:
+    REDIS_HOST: redis
+redis:
+  image: redis
