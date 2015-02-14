@@ -1,4 +1,4 @@
-FROM node
+FROM node:0.10
 
 RUN apt-get update
 RUN apt-get -y install libopenimageio-dev node-gyp
